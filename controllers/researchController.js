@@ -75,6 +75,7 @@ class Controller {
                 where: { id: researchId },
                 returning: true,
             });
+
             res.status(200).json(updateResearch);
         } catch (error) {
             console.log(error);
