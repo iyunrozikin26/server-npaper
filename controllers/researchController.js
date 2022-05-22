@@ -1,4 +1,5 @@
 const { Research, Category, User, Profile } = require("../models");
+const { Op } = require("sequelize");
 
 class Controller {
     static async postResearch(req, res, next) {
@@ -34,13 +35,15 @@ class Controller {
                 include: [Category, { model: User, include: Profile }],
                 order: [["createdAt", "DESC"]],
             };
-            if (req.query.byName) {
+
+            console.log(req.query.title);
+            if (req.query.title) {
                 option.where = {
-                    title: { [Op.iLike]: `%${req.query.byName}%` },
+                    title: { [Op.iLike]: `%${req.query.title}%` },
                 };
             }
             console.log(option);
-            // PAGINATION
+            // // PAGINATION
             const getResearchAll = await Research.findAll(option);
             res.status(200).json(getResearchAll);
         } catch (error) {
